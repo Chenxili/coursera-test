@@ -61,7 +61,7 @@ section > h2{
 	text-align: center;
 	font-size: 125%;
 	border: 1px solid black;
-	width: 200px;
+	width: 150px;
 	height: 30px;
 	margin: 0px;
 	position: absolute;
@@ -81,5 +81,5 @@ section > h2{
 section >p{
 	text-align: justify;
 	width: 90%;
-	margin: 30px 5% 10px 5%
+	margin: 40px 5% 10px 5%
 }
