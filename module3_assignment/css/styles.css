@@ -1,0 +1,11 @@
+#main-content{
+	height: 1000px;
+	background-color: #FF8C00;
+	padding: 0 25px 0 25px;
+}
+#nav-list{
+	background-color:#F0E68C;
+}
+#hav-list a{
+	text-align: center;
+}
