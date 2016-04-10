@@ -9,6 +9,7 @@ $(function () { // Same as document.addEventListener("DOMContentLoaded"...
   });
 });
 
+// immediate invoked function expresion
 (function (global) {
 
 var dc = {};
@@ -23,7 +24,7 @@ var menuItemsUrl =
 var menuItemsTitleHtml = "snippets/menu-items-title.html";
 var menuItemHtml = "snippets/menu-item.html";
 
-// Convinience function for inserting innerHTML for 'select'
+// Convenience function for inserting innerHTML for 'select'
 var insertHtml = function (selector, html) {
   var targetElem = document.querySelector(selector);
   targetElem.innerHTML = html;
@@ -39,6 +40,7 @@ var showLoading = function (selector) {
 // Return substitute of '{{propName}}' 
 // with propValue in given 'string' 
 var insertProperty = function (string, propName, propValue) {
+  //why the {{}}?
   var propToReplace = "{{" + propName + "}}";
   string = string
     .replace(new RegExp(propToReplace, "g"), propValue);
@@ -49,7 +51,7 @@ var insertProperty = function (string, propName, propValue) {
 var switchMenuToActive = function () {
   // Remove 'active' from home button
   var classes = document.querySelector("#navHomeButton").className;
-  classes = classes.replace(new RegExp("active", "g"), "");
+  classes = classes.replace(new RegExp("active", "g"), ""); //get rid of "active" in the className list
   document.querySelector("#navHomeButton").className = classes;
 
   // Add 'active' to menu button if not already there
@@ -83,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 showLoading("#main-content");
 $ajaxUtils.sendGetRequest(
   allCategoriesUrl, 
-  [...], // ***** <---- TODO: STEP 1: Substitute [...] ******
+  buildAndShowHomeHTML, // ***** <---- TODO: STEP 1: Substitute [...] ******
   true); // Explicitely setting the flag to get JSON from server processed into an object literal
 });
 // *** finish **
@@ -92,7 +94,6 @@ $ajaxUtils.sendGetRequest(
 // Builds HTML for the home page based on categories array
 // returned from the server.
 function buildAndShowHomeHTML (categories) {
-  
   // Load home snippet page
   $ajaxUtils.sendGetRequest(
     homeHtmlUrl,
@@ -101,9 +102,10 @@ function buildAndShowHomeHTML (categories) {
       // TODO: STEP 2: Here, call chooseRandomCategory, passing it retrieved 'categories'
       // Pay attention to what type of data that function returns vs what the chosenCategoryShortName
       // variable's name implies it expects.
-      // var chosenCategoryShortName = ....
-      
-
+      var chosenCategoryShortName = chooseRandomCategory(categories).short_name; 
+      var shortName = "'"+chosenCategoryShortName+"'";
+      var homeHtmlToInsertIntoMainPage = insertProperty(homeHtml, "randomCategoryShortName", shortName);
+      insertHtml("#main-content", homeHtmlToInsertIntoMainPage);
       // TODO: STEP 3: Substitute {{randomCategoryShortName}} in the home html snippet with the
       // chosen category from STEP 2. Use existing insertProperty function for that purpose.
       // Look through this code for an example of how to do use the insertProperty function.
@@ -157,7 +159,7 @@ dc.loadMenuItems = function (categoryShort) {
 };
 
 
-// Builds HTML for the categiries page based on the data
+// Builds HTML for the categories page based on the data
 // from the server
 function buildAndShowCategoriesHTML (categories) {
   // Load title snippet of categories page
